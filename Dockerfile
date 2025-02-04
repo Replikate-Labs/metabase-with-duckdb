@@ -1,8 +1,9 @@
-FROM metabase/metabase:latest
+ARG METABASE_VERSION=latest
+FROM metabase/metabase:${METABASE_VERSION}
+ARG DUCKDB_DRIVER_VERSION=0.2.12
 
-# Download the driver using curl (which should be available in the base image)
 RUN mkdir -p /plugins && \
     curl -L -o /plugins/duckdb.metabase-driver.jar \
-    https://github.com/MotherDuck-Open-Source/metabase_duckdb_driver/releases/download/0.2.12/duckdb.metabase-driver.jar
+         https://github.com/MotherDuck-Open-Source/metabase_duckdb_driver/releases/download/${DUCKDB_DRIVER_VERSION}/duckdb.metabase-driver.jar
 
 ENV MB_PLUGINS_DIR=/plugins
