@@ -24,7 +24,7 @@ jobs:
           context: .
           push: true
           tags: |
-            yourdockerhubuser/metabase:${{ github.event.release.tag_name || env.METABASE_VERSION }}
+            nasreplikate/metabase-with-community-drivers:${{ github.event.release.tag_name || env.METABASE_VERSION }}
           build-args: |
             METABASE_VERSION=${{ github.event.release.tag_name || env.METABASE_VERSION }}
             DUCKDB_DRIVER_VERSION=${{ env.DUCKDB_DRIVER_VERSION }}
