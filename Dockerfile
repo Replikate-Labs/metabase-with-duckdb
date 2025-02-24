@@ -1,10 +1,9 @@
 ARG METABASE_VERSION=latest
 FROM metabase/metabase:${METABASE_VERSION}
 
-USER root
+# Install C++ runtime
 RUN apk add --no-cache libstdc++
 
-USER metabase
 ARG DUCKDB_DRIVER_VERSION=0.2.12-b
 RUN mkdir -p /plugins && \
     curl -L -o /plugins/duckdb.metabase-driver.jar \
