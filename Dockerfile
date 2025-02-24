@@ -1,6 +1,6 @@
 ARG METABASE_VERSION=latest
 FROM metabase/metabase:${METABASE_VERSION}
-ARG DUCKDB_DRIVER_VERSION=0.2.12
+ARG DUCKDB_DRIVER_VERSION=0.2.12-b
 
 RUN mkdir -p /plugins && \
     curl -L -o /plugins/duckdb.metabase-driver.jar \
