@@ -2,7 +2,7 @@ ARG METABASE_VERSION=latest
 FROM metabase/metabase:${METABASE_VERSION}
 
 # Install C++ runtime
-RUN apk add --no-cache libstdc++
+RUN apk add --no-cache libc6-compat libstdc++
 
 ARG DUCKDB_DRIVER_VERSION=0.2.12-b
 RUN mkdir -p /plugins && \
