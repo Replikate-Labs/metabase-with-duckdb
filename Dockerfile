@@ -11,8 +11,8 @@ RUN apk add --no-cache libc6-compat libstdc++ wget && \
     apk add --no-cache --force-overwrite glibc-2.35-r1.apk glibc-bin-2.35-r1.apk glibc-i18n-2.35-r1.apk && \
     mv /etc/nsswitch.conf.bak /etc/nsswitch.conf && \
     rm glibc-2.35-r1.apk glibc-bin-2.35-r1.apk glibc-i18n-2.35-r1.apk && \
-    /usr/glibc-compat/bin/localedef -i en_US -f UTF-8 en_US.UTF-8
-
+    /usr/glibc-compat/bin/localedef -i en_US -f UTF-8 en_US.UTF-8 && \
+    ln -sf /usr/glibc-compat/lib/ld-linux-x86-64.so.2 /lib/ld-linux-x86-64.so.2
 
 ARG DUCKDB_DRIVER_VERSION=0.2.12-b
 RUN mkdir -p /plugins && \
