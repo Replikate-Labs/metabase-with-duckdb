@@ -15,8 +15,8 @@ RUN apk add --no-cache libc6-compat libstdc++ wget && \
 
 
 ARG DUCKDB_DRIVER_VERSION=0.2.12-b
-RUN mkdir -p /app/plugins && \
-    curl -L -o /app/plugins/duckdb.metabase-driver.jar \
+RUN mkdir -p /plugins && \
+    curl -L -o /plugins/duckdb.metabase-driver.jar \
          https://github.com/MotherDuck-Open-Source/metabase_duckdb_driver/releases/download/${DUCKDB_DRIVER_VERSION}/duckdb.metabase-driver.jar
 
-ENV MB_PLUGINS_DIR=/app/plugins
+ENV MB_PLUGINS_DIR=/plugins
