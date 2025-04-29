@@ -1,25 +1,26 @@
 ############################
 # build-time arguments     #
 ############################
-ARG METABASE_VERSION=v0.54.4.x     # <-- drop the extra “.x”
-ARG DUCKDB_DRIVER_VERSION=0.3.0  # 0.3.0 is still the latest
+ARG METABASE_VERSION=v0.54.5.x         # keep the .x tag for Docker Hub
+ARG DUCKDB_DRIVER_VERSION=0.3.0        # MotherDuck driver tag
 
 ############################
-# runtime image            #
+# Stage 0 – extract JAR    #
 ############################
-FROM eclipse-temurin:17-jre-jammy AS runtime   # glibc base, multi-arch
+FROM metabase/metabase:${METABASE_VERSION} AS metabase-src
 
 ############################
-# non-root user            #
+# Stage 1 – slim runtime   #
 ############################
+FROM eclipse-temurin:17-jre-jammy AS runtime   # Debian+glibc, multi-arch
+
+# non-root user
 RUN useradd -u 1000 -ms /bin/bash metabase
 
-############################
-# install Metabase + driver#
-############################
-ADD https://downloads.metabase.com/${METABASE_VERSION#v}/metabase.jar \
-    /opt/metabase/metabase.jar
+# copy Metabase JAR from stage 0
+COPY --from=metabase-src /app/metabase.jar /opt/metabase/metabase.jar
 
+# MotherDuck driver
 RUN mkdir -p /opt/metabase/plugins && \
     curl -fsSL \
       https://github.com/MotherDuck-Open-Source/metabase_duckdb_driver/releases/download/${DUCKDB_DRIVER_VERSION}/duckdb.metabase-driver.jar \
