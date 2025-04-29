@@ -1,13 +1,18 @@
 ############################
 # build-time args
 ############################
-ARG METABASE_VERSION
-ARG DUCKDB_DRIVER_VERSION
+# Default values that will be overridden by build args
+ARG METABASE_VERSION=v0.54.5
+ARG DUCKDB_DRIVER_VERSION=0.3.0
 
 ############################
 # Runtime stage – Use Debian instead of Alpine for better glibc compatibility
 ############################
 FROM eclipse-temurin:17-jre
+
+# Pass ARGs from outer scope to inner scope
+ARG METABASE_VERSION
+ARG DUCKDB_DRIVER_VERSION
 
 # Create plugins directory
 RUN mkdir -p /plugins

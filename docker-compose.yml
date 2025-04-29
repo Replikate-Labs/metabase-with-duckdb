@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  metabase:
+    build:
+      context: .
+      args:
+        - METABASE_VERSION=${METABASE_VERSION}
+        - DUCKDB_DRIVER_VERSION=${DUCKDB_DRIVER_VERSION}
+    image: metabase-duckdb:${IMAGE_TAG}
+    ports:
+      - "3000:3000"
+    environment:
+      - MB_PLUGINS_DIR=/plugins
+    volumes:
+      - metabase-data:/metabase-data
+    restart: unless-stopped
+
+volumes:
+  metabase-data: 
