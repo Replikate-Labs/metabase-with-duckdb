@@ -12,7 +12,7 @@ FROM metabase/metabase:${METABASE_VERSION} AS metabase-src
 ############################
 # Stage 1 – slim runtime   #
 ############################
-FROM eclipse-temurin:17-jre-jammy AS runtime   # Debian+glibc, multi-arch
+FROM eclipse-temurin:17-jre-jammy AS runtime
 
 # non-root user
 RUN useradd -u 1000 -ms /bin/bash metabase
