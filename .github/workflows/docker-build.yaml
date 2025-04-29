@@ -19,6 +19,8 @@ jobs:
         run: |
           echo "METABASE_VERSION=$(grep '^METABASE_VERSION=' config.env | cut -d'=' -f2)" >> $GITHUB_ENV
           echo "DUCKDB_DRIVER_VERSION=$(grep '^DUCKDB_DRIVER_VERSION=' config.env | cut -d'=' -f2)" >> $GITHUB_ENV
+          echo "IMAGE_TAG=$(grep '^IMAGE_TAG=' config.env | cut -d'=' -f2)" >> $GITHUB_ENV
+          
       - uses: docker/build-push-action@v4
         with:
           context: .
