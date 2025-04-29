@@ -1,7 +1,7 @@
 ############################
 # build-time arguments     #
 ############################
-ARG METABASE_VERSION=v0.54.4     # <-- drop the extra “.x”
+ARG METABASE_VERSION=v0.54.4.x     # <-- drop the extra “.x”
 ARG DUCKDB_DRIVER_VERSION=0.3.0  # 0.3.0 is still the latest
 
 ############################
