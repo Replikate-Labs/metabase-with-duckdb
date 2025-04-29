@@ -6,9 +6,9 @@ ARG METABASE_VERSION=v0.54.5
 ARG DUCKDB_DRIVER_VERSION=0.3.0
 
 ############################
-# Runtime stage – Use Debian instead of Alpine for better glibc compatibility
+# Runtime stage – Use Debian with Java 21 for compatibility
 ############################
-FROM eclipse-temurin:17-jre
+FROM eclipse-temurin:21-jre
 
 # Pass ARGs from outer scope to inner scope
 ARG METABASE_VERSION
