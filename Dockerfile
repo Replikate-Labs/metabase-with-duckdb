@@ -1,27 +1,41 @@
-ARG METABASE_VERSION=latest
-FROM metabase/metabase:${METABASE_VERSION}
+############################
+#  build-time parameters   #
+############################
+ARG METABASE_VERSION=v0.52.9        # pin to the last MB release that driver 0.3.0 is QA-ed against
+ARG DUCKDB_DRIVER_VERSION=0.3.0     # or bump when MotherDuck ships 0.4.x
 
-# expose the driver-version arg after FROM so it’s in-scope
-ARG DUCKDB_DRIVER_VERSION=0.3.0
+############################
+#  runtime image           #
+############################
+FROM eclipse-temurin:17-jre-jammy AS runtime
+# Temurin = Debian + glibc → DuckDB JNI loads, no 502s
 
-USER root
+############################
+#  non-root metabase user  #
+############################
+RUN useradd -u 1000 -ms /bin/bash metabase
 
-# 1) install glibc shim + curl
-# 2) add metabase user/group at UID/GID 1000
-# 3) fetch the DuckDB driver and chown /plugins
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
- && apk update \
- && apk add --no-cache libc6-compat libstdc++ gcompat curl \
- && addgroup -g 1000 metabasegrp \
- && adduser  -u 1000 -G metabasegrp -D metabase \
- && mkdir -p /plugins \
- && curl -fSL \
-      "https://github.com/MotherDuck-Open-Source/metabase_duckdb_driver/releases/download/${DUCKDB_DRIVER_VERSION}/duckdb.metabase-driver.jar" \
-      -o /plugins/duckdb.metabase-driver.jar \
- && chown -R 1000:1000 /plugins
+############################
+#  install Metabase + MD   #
+############################
+# 1) Metabase JAR
+ADD https://downloads.metabase.com/${METABASE_VERSION#v}/metabase.jar /opt/metabase/metabase.jar
 
-# tell Metabase where to look
-ENV MB_PLUGINS_DIR=/plugins
+# 2) MotherDuck driver
+RUN mkdir -p /opt/metabase/plugins && \
+    curl -fsSL \
+      https://github.com/MotherDuck-Open-Source/metabase_duckdb_driver/releases/download/${DUCKDB_DRIVER_VERSION}/duckdb.metabase-driver.jar \
+      -o /opt/metabase/plugins/duckdb.metabase-driver.jar && \
+    chmod 644 /opt/metabase/plugins/duckdb.metabase-driver.jar && \
+    chown -R metabase:metabase /opt/metabase
 
-# finally drop to the new metabase user
+############################
+#  runtime config          #
+############################
+ENV MB_PLUGINS_DIR=/opt/metabase/plugins \
+    MB_JETTY_PORT=3000       # change if you front-it with nginx on another port
+
 USER metabase
+WORKDIR /opt/metabase
+EXPOSE 3000
+ENTRYPOINT ["java","-jar","/opt/metabase/metabase.jar"]
