@@ -1,7 +1,7 @@
 ############################
 # build-time arguments     #
 ############################
-ARG METABASE_VERSION=v0.54.5.x
+ARG METABASE_VERSION=v0.54.4.x
 
 
 ############################
@@ -9,7 +9,7 @@ ARG METABASE_VERSION=v0.54.5.x
 ############################
 FROM metabase/metabase:${METABASE_VERSION} AS metabase-src
 
-ARG DUCKDB_DRIVER_VERSION=0.3.0        # MotherDuck driver tag
+ARG DUCKDB_DRIVER_VERSION=0.3.0
 
 ##########################
 # MotherDuck driver
