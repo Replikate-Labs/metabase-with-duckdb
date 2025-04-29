@@ -13,10 +13,10 @@ ARG DUCKDB_DRIVER_VERSION=0.3.0
 
 ##########################
 # MotherDuck driver
-RUN mkdir -p /opt/metabase/plugins && \
+RUN mkdir -p /plugins && \
     curl -fsSL \
       https://github.com/MotherDuck-Open-Source/metabase_duckdb_driver/releases/download/${DUCKDB_DRIVER_VERSION}/duckdb.metabase-driver.jar \
-      -o /opt/metabase/plugins/duckdb.metabase-driver.jar && \
-    chmod 644 /opt/metabase/plugins/duckdb.metabase-driver.jar
+      -o /plugins/duckdb.metabase-driver.jar && \
+    chmod 644 /plugins/duckdb.metabase-driver.jar
 
-ENV MB_PLUGINS_DIR=/opt/metabase/plugins
+ENV MB_PLUGINS_DIR=/plugins
