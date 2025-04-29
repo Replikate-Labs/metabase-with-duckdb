@@ -8,7 +8,7 @@ ARG DUCKDB_DRIVER_VERSION=0.3.0
 ############################
 # Runtime stage – Use Debian with Java 21 for compatibility
 ############################
-FROM eclipse-temurin:21-jre
+FROM eclipse-temurin:24-jre
 
 # Pass ARGs from outer scope to inner scope
 ARG METABASE_VERSION
