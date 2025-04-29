@@ -19,3 +19,4 @@ RUN mkdir -p /opt/metabase/plugins && \
       -o /opt/metabase/plugins/duckdb.metabase-driver.jar && \
     chmod 644 /opt/metabase/plugins/duckdb.metabase-driver.jar
 
+ENV MB_PLUGINS_DIR=/opt/metabase/plugins
