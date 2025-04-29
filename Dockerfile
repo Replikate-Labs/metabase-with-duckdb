@@ -1,27 +1,25 @@
 ############################
-#  build-time parameters   #
+# build-time arguments     #
 ############################
-ARG METABASE_VERSION=v0.52.9        # pin to the last MB release that driver 0.3.0 is QA-ed against
-ARG DUCKDB_DRIVER_VERSION=0.3.0     # or bump when MotherDuck ships 0.4.x
+ARG METABASE_VERSION=v0.54.4     # <-- drop the extra “.x”
+ARG DUCKDB_DRIVER_VERSION=0.3.0  # 0.3.0 is still the latest
 
 ############################
-#  runtime image           #
+# runtime image            #
 ############################
-FROM eclipse-temurin:17-jre-jammy AS runtime
-# Temurin = Debian + glibc → DuckDB JNI loads, no 502s
+FROM eclipse-temurin:17-jre-jammy AS runtime   # glibc base, multi-arch
 
 ############################
-#  non-root metabase user  #
+# non-root user            #
 ############################
 RUN useradd -u 1000 -ms /bin/bash metabase
 
 ############################
-#  install Metabase + MD   #
+# install Metabase + driver#
 ############################
-# 1) Metabase JAR
-ADD https://downloads.metabase.com/${METABASE_VERSION#v}/metabase.jar /opt/metabase/metabase.jar
+ADD https://downloads.metabase.com/${METABASE_VERSION#v}/metabase.jar \
+    /opt/metabase/metabase.jar
 
-# 2) MotherDuck driver
 RUN mkdir -p /opt/metabase/plugins && \
     curl -fsSL \
       https://github.com/MotherDuck-Open-Source/metabase_duckdb_driver/releases/download/${DUCKDB_DRIVER_VERSION}/duckdb.metabase-driver.jar \
@@ -30,10 +28,10 @@ RUN mkdir -p /opt/metabase/plugins && \
     chown -R metabase:metabase /opt/metabase
 
 ############################
-#  runtime config          #
+# runtime env              #
 ############################
 ENV MB_PLUGINS_DIR=/opt/metabase/plugins \
-    MB_JETTY_PORT=3000       # change if you front-it with nginx on another port
+    MB_JETTY_PORT=3000
 
 USER metabase
 WORKDIR /opt/metabase
