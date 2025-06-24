@@ -2,8 +2,8 @@
 # build-time args
 ############################
 # Default values that will be overridden by build args
-ARG METABASE_VERSION=v0.54.5
-ARG DUCKDB_DRIVER_VERSION=0.3.0
+ARG METABASE_VERSION=v0.55.4
+ARG DUCKDB_DRIVER_VERSION=0.3.1
 
 ############################
 # Runtime stage – Use Debian with Java 21 for compatibility
