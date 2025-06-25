@@ -2,7 +2,7 @@
 # build-time args
 ############################
 # Default values that will be overridden by build args
-ARG METABASE_VERSION=v0.55.4
+ARG METABASE_VERSION=v0.55.5.1
 ARG DUCKDB_DRIVER_VERSION=0.3.1
 
 ############################
